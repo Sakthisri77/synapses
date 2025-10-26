@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operation Theatre Management</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #6a0572;
+      margin-bottom: 30px;
+    }
+
+    details {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+
+    summary {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #6a0572;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="date"], input[type="datetime-local"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    #saveMessage {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏥 Operation Theatre Management</h1>
+
+  <form id="otChecklistForm">
+    <label>Patient ID</label>
+    <input type="text" id="patientId" required />
+
+    <!-- 1. Case Booking -->
+    <details open>
+      <summary>1️⃣ Case Booking</summary>
+      <div class="checklist-item"><input type="checkbox" /> Patient details verified</div>
+      <div class="checklist-item"><input type="checkbox" /> Diagnosis confirmed</div>
+      <div class="checklist-item"><input type="checkbox" /> Type of surgery & side specified</div>
+      <div class="checklist-item"><input type="checkbox" /> Surgeon and assistant assigned</div>
+      <div class="checklist-item"><input type="checkbox" /> Anaesthetist assigned</div>
+      <div class="checklist-item"><input type="checkbox" /> Date and time of surgery confirmed</div>
+      <div class="checklist-item"><input type="checkbox" /> OT room allocated</div>
+      <div class="checklist-item"><input type="checkbox" /> Equipment & instruments available</div>
+      <div class="checklist-item"><input type="checkbox" /> Blood products arranged</div>
+      <div class="checklist-item"><input type="checkbox" /> Pre-op investigations completed</div>
+      <div class="checklist-item"><input type="checkbox" /> Consent form signed & uploaded</div>
+    </details>
+
+    <!-- 2. Pre-operative Checklist -->
+    <details>
+      <summary>2️⃣ Pre-operative Checklist</summary>
+      <div class="checklist-item"><input type="checkbox" /> Patient identity confirmed</div>
+      <div class="checklist-item"><input type="checkbox" /> Surgical site marked</div>
+      <div class="checklist-item"><input type="checkbox" /> Allergies checked</div>
+      <div class="checklist-item"><input type="checkbox" /> NPO confirmed</div>
+      <div class="checklist-item"><input type="checkbox" /> IV line secured</div>
+      <div class="checklist-item"><input type="checkbox" /> Pre-medications given</div>
+      <div class="checklist-item"><input type="checkbox" /> Shaving/prep done</div>
+      <div class="checklist-item"><input type="checkbox" /> Vital signs recorded</div>
+      <div class="checklist-item"><input type="checkbox" /> Consent double-checked</div>
+      <div class="checklist-item"><input type="checkbox" /> Anaesthesia machine check</div>
+      <div class="checklist-item"><input type="checkbox" /> Monitoring equipment ready</div>
+      <div class="checklist-item"><input type="checkbox" /> Emergency drugs & suction ready</div>
+    </details>
+
+    <!-- 3. Intra-Operative Checklist -->
+    <details>
+      <summary>3️⃣ Intra-Operative Checklist</summary>
+      <div class="checklist-item"><input type="checkbox" /> Time-in & Time-out recorded</div>
+      <div class="checklist-item"><input type="checkbox" /> Team briefing done</div>
+      <div class="checklist-item"><input type="checkbox" /> Sterility maintained</div>
+      <div class="checklist-item"><input type="checkbox" /> Instrument count</div>
+      <div class="checklist-item"><input type="checkbox" /> Sponge/needle count</div>
+      <div class="checklist-item"><input type="checkbox" /> Patient monitoring continued</div>
+      <div class="checklist-item"><input type="checkbox" /> Specimens labelled</div>
+      <div class="checklist-item"><input type="checkbox" /> Antibiotic timing correct</div>
+      <div class="checklist-item"><input type="checkbox" /> Blood loss estimated</div>
+      <div class="checklist-item"><input type="checkbox" /> Complications recorded</div>
+      <div class="checklist-item"><input type="checkbox" /> Surgeon’s note entered</div>
+      <div class="checklist-item"><input type="checkbox" /> WHO Time Out & Sign Out</div>
+    </details>
+
+    <!-- 4. Post-Operative Checklist -->
+    <details>
+      <summary>4️⃣ Post-Operative / Recovery Room Checklist</summary>
+      <div class="checklist-item"><input type="checkbox" /> Airway clear, vitals stable</div>
+      <div class="checklist-item"><input type="checkbox" /> Anaesthetic recovery observed</div>
+      <div class="checklist-item"><input type="checkbox" /> Pain management initiated</div>
+      <div class="checklist-item"><input type="checkbox" /> IV fluids running</div>
+      <div class="checklist-item"><input type="checkbox" /> Surgical site checked</div>
+      <div class="checklist-item"><input type="checkbox" /> Drain/catheter functioning</div>
+      <div class="checklist-item"><input type="checkbox" /> Specimen dispatch confirmed</div>
+      <div class="checklist-item"><input type="checkbox" /> Post-op orders signed</div>
+      <div class="checklist-item"><input type="checkbox" /> Handover to recovery nurse</div>
+    </details>
+
+    <!-- 5. Staff Assignment -->
+    <details>
+      <summary>5️⃣ Staff Assignment</summary>
+      <label>Lead Surgeon</label><input type="text" />
+      <label>Assistant Surgeon</label><input type="text" />
+      <label>Anaesthetist</label><input type="text" />
+      <label>Scrub Nurse</label><input type="text" />
+      <label>Circulating Nurse</label><input type="text" />
+      <label>Technician (Equipment)</label><input type="text" />
+      <label>Attendant / Runner</label><input type="text" />
+      <label>Cleaning Staff</label><input type="text" />
+    </details>
+
+    <!-- 6. Equipment & Sterilization -->
+    <details>
+      <summary>6️⃣ Equipment & Sterilization Checklist</summary>
+      <div class="checklist-item"><input type="checkbox" /> OT Lights</div>
+      <div class="checklist-item"><input type="checkbox" /> Anaesthesia Machine</div>
+      <div class="checklist-item"><input type="checkbox" /> Defibrillator</div>
+      <div class="checklist-item"><input type="checkbox" /> Electrocautery Unit</div>
+      <div class="checklist-item"><input type="checkbox" /> Suction Apparatus</div>
+      <div class="checklist-item"><input type="checkbox" /> Surgical Instruments</div>
+      <div class="checklist-item"><input type="checkbox" /> Drapes, Gowns, Gloves</div>
+      <div class="checklist-item"><input type="checkbox" /> Sterilization Records checked</div>
+      <div class="checklist-item"><input type="checkbox" /> Emergency Equipment ready</div>
+
+    <!-- 7. Documentation -->
+      <details>
+  <summary>7️⃣ Documentation / Record Checklist</summary>
+  <div class="checklist-item"><input type="checkbox" /> Case Booking Sheet</div>
+  <div class="checklist-item"><input type="checkbox" /> Pre-operative Assessment</div>
+  <div class="checklist-item"><input type="checkbox" /> Anaesthesia Record</div>
+  <div class="checklist-item"><input type="checkbox" /> Intra-operative Record</div>
+  <div class="checklist-item"><input type="checkbox" /> Post-operative Orders</div>
+  <div class="checklist-item"><input type="checkbox" /> Surgical Report</div>
+  <div class="checklist-item"><input type="checkbox" /> Nursing Notes</div>
+</details>
+<button type="button" onclick="saveChecklist()">✅ Save to History</button>
+<p id="saveMessage"></p>
+<script>
+  function saveChecklist() {
+    const patientId = document.getElementById("patientId").value.trim();
+    if (!patientId) {
+      alert("Please enter a Patient ID.");
+      return;
+    }
+
+    const form = document.getElementById("otChecklistForm");
+    const inputs = form.querySelectorAll("input, textarea");
+    const data = { timestamp: new Date().toLocaleString(), fields: {} };
+
+    inputs.forEach((input, i) => {
+      if (input.type === "checkbox") {
+        data.fields[input.nextSibling?.textContent?.trim() || `checkbox_${i}`] = input.checked;
+      } else {
+        data.fields[input.previousElementSibling?.textContent?.trim() || `input_${i}`] = input.value.trim();
+      }
+    });
+
+    localStorage.setItem(`OT_${patientId}`, JSON.stringify(data));
+    document.getElementById("saveMessage").textContent = `✅ Checklist saved for Patient ID: ${patientId}`;
+    form.reset();
+  }
+</script>

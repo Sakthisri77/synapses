@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Management </title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      color: #6a0572;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      border-left: 8px solid #6a0572;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+      color: #6a0572;
+    }
+
+    .card p {
+      font-size: 1em;
+      color: #555;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Management Dashboard</h1>
+  <div class="grid">
+    <a href="bed-manegment.html">
+      <div class="card">
+        <h2>🛏️ Bed Management</h2>
+        <p>Track bed availability, occupancy, and assignments across wards.</p>
+      </div>
+    </a>
+    <a href="ambulance.html">
+      <div class="card">
+        <h2>🚑 Ambulance</h2>
+        <p>Fast dispatch, clean vehicles, and real-time tracking for emergencies.</p>
+      </div>
+    </a>
+    <a href="cssdmanagement.html">
+      <div class="card">
+        <h2>🧼 CSSD Management</h2>
+        <p>Monitor sterilization cycles, instrument dispatch, and inventory.</p>
+      </div>
+    </a>
+    <a href="operation.html">
+      <div class="card">
+        <h2>🏥 OT Management</h2>
+        <p>Checklists, scheduling, and surgical workflow.</p>
+      </div>
+
+    <a href="biomedical.html">
+      <div class="card">
+        <h2>🛠️ Biomedical Equipment</h2>
+        <p>Manage equipment status, maintenance schedules, and fault reports.</p>
+      </div>
+    </a>
+  </div>
+</body>
+</html>

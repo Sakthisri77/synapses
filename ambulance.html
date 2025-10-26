@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ambulance Management System</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+      font-size: 2.5em;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .ambulance-list {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .ambulance-card {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-left: 6px solid #6a0572;
+    }
+
+    .ambulance-card h3 {
+      margin: 0;
+      color: #6a0572;
+    }
+
+    .ambulance-card p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ambulance Management System</h1>
+
+  <form id="ambulanceForm" onsubmit="dispatchAmbulance(); return false;">
+    <label>Ambulance ID</label>
+    <input type="text" id="ambulanceId" required />
+
+    <label>Driver Name</label>
+    <input type="text" id="driverName" required />
+
+    <label>Contact Number</label>
+    <input type="tel" id="contact" required />
+
+    <label>Status</label>
+    <select id="status" required>
+      <option value="Available">Available</option>
+      <option value="On Duty">On Duty</option>
+      <option value="Maintenance">Maintenance</option>
+    </select>
+
+    <label>Current Location</label>
+    <input type="text" id="location" required />
+
+    <button type="submit">Dispatch / Update</button>
+  </form>
+
+  <div class="ambulance-list" id="ambulanceList"></div>
+
+  <script>
+    function dispatchAmbulance() {
+      const ambulance = {
+        ambulanceId: document.getElementById("ambulanceId").value.trim(),
+        driverName: document.getElementById("driverName").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        status: document.getElementById("status").value,
+        location: document.getElementById("location").value.trim(),
+        timestamp: new Date().toLocaleString()
+      };
+
+      let fleet = JSON.parse(localStorage.getItem("ambulanceFleet") || "[]");
+
+      // Update if ambulance ID already exists
+      const index = fleet.findIndex(a => a.ambulanceId === ambulance.ambulanceId);
+      if (index !== -1) {
+        fleet[index] = ambulance;
+      } else {
+        fleet.push(ambulance);
+      }
+
+      localStorage.setItem("ambulanceFleet", JSON.stringify(fleet));
+      document.getElementById("ambulanceForm").reset();
+      loadAmbulances();
+    }
+
+    function loadAmbulances() {
+      const fleet = JSON.parse(localStorage.getItem("ambulanceFleet") || "[]");
+      const container = document.getElementById("ambulanceList");
+      container.innerHTML = "";
+
+      fleet.forEach(amb => {
+        const card = document.createElement("div");
+        card.className = "ambulance-card";
+        card.innerHTML = `
+          <h3>Ambulance ${amb.ambulanceId}</h3>
+          <p><strong>Driver:</strong> ${amb.driverName}</p>
+          <p><strong>Contact:</strong> ${amb.contact}</p>
+          <p><strong>Status:</strong> ${amb.status}</p>
+          <p><strong>Location:</strong> ${amb.location}</p>
+          <p><strong>Last Updated:</strong> ${amb.timestamp}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.onload = loadAmbulances;
+  </script>
+</body>
+</html>

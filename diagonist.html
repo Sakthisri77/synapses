@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnostics & Lab Investigation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      resize: vertical;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .success {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Diagnostics & Lab Investigation</h1>
+  <form onsubmit="saveDiagnostics(); return false;">
+    <label>Patient ID</label>
+    <input type="text" id="patientId" required />
+
+    <label>Test Ordered</label>
+    <input type="text" id="testOrder" placeholder="e.g., CBC, X-Ray Chest" required />
+
+    <label>Sample Collection Type</label>
+    <select id="sampleType" required>
+      <option value="">Select Type</option>
+      <option value="Blood">Blood</option>
+      <option value="Urine">Urine</option>
+      <option value="Swab">Swab</option>
+      <option value="Saliva">Saliva</option>
+      <option value="Biopsy">Biopsy</option>
+    </select>
+
+    <label>Collection Date & Time</label>
+    <input type="datetime-local" id="collectionTime" required />
+
+    <label>Doctor's Diagnostic Impression</label>
+    <textarea id="diagnosisNotes" rows="4" placeholder="Enter notes or impression..." required></textarea>
+
+    <button type="submit">Save Diagnostics</button>
+  </form>
+
+  <div class="success" id="successMessage"></div>
+
+  <script>
+    // Auto-fill current datetime
+    document.getElementById("collectionTime").value = new Date().toISOString().slice(0,16);
+
+    function saveDiagnostics() {
+      const id = document.getElementById("patientId").value.trim();
+      const diagnostics = {
+        testOrder: document.getElementById("testOrder").value,
+        sampleType: document.getElementById("sampleType").value,
+        collectionTime: document.getElementById("collectionTime").value,
+        diagnosisNotes: document.getElementById("diagnosisNotes").value,
+        dateSaved: new Date().toLocaleString()
+      };
+
+      let allDiagnostics = JSON.parse(localStorage.getItem("diagnostics") || "{}");
+      if (!allDiagnostics[id]) {
+        allDiagnostics[id] = [];
+      }
+      allDiagnostics[id].push(diagnostics);
+      localStorage.setItem("diagnostics", JSON.stringify(allDiagnostics));
+
+      document.getElementById("successMessage").textContent = "Diagnostics saved successfully!";
+      document.querySelector("form").reset();
+      document.getElementById("collectionTime").value = new Date().toISOString().slice(0,16);
+    }
+  </script>
+</body>
+</html>

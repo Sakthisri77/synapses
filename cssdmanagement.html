@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSSD Management System</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+      font-size: 2.5em;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .record-list {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .record-card {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-left: 6px solid #6a0572;
+    }
+
+    .record-card h3 {
+      margin: 0;
+      color: #6a0572;
+    }
+
+    .record-card p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSSD Management System</h1>
+
+  <form id="cssdForm" onsubmit="saveCSSD(); return false;">
+    <label>Instrument / Set ID</label>
+    <input type="text" id="setId" required />
+
+    <label>Instrument Name / Type</label>
+    <input type="text" id="instrumentType" required />
+
+    <label>Department or OT Using the Set</label>
+    <input type="text" id="department" required />
+
+    <label>Date & Time of Collection</label>
+    <input type="datetime-local" id="collectionTime" required />
+
+    <label>Cleaning Process Status</label>
+    <select id="cleaningStatus" required>
+      <option value="Washed">Washed</option>
+      <option value="Dried">Dried</option>
+      <option value="Packed">Packed</option>
+    </select>
+
+    <label>Sterilization Method</label>
+    <select id="sterilizationMethod" required>
+      <option value="Steam Autoclave">Steam Autoclave</option>
+      <option value="ETO">ETO</option>
+      <option value="Plasma">Plasma</option>
+    </select>
+
+    <label>Sterilization Date</label>
+    <input type="date" id="sterilizationDate" required />
+
+    <label>Cycle Number</label>
+    <input type="text" id="cycleNumber" required />
+
+    <label>Quality Check Status</label>
+    <select id="qualityStatus" required>
+      <option value="Passed">Passed</option>
+      <option value="Failed">Failed</option>
+    </select>
+
+    <label>Issued To</label>
+    <input type="text" id="issuedTo" required />
+
+    <label>Return / Reuse Date</label>
+    <input type="date" id="returnDate" required />
+
+    <label>Technician / Operator Name</label>
+    <input type="text" id="technician" required />
+
+    <button type="submit">Save Record</button>
+  </form>
+
+  <div class="record-list" id="cssdList"></div>
+
+  <script>
+    function saveCSSD() {
+      const record = {
+        setId: document.getElementById("setId").value.trim(),
+        instrumentType: document.getElementById("instrumentType").value.trim(),
+        department: document.getElementById("department").value.trim(),
+        collectionTime: document.getElementById("collectionTime").value,
+        cleaningStatus: document.getElementById("cleaningStatus").value,
+        sterilizationMethod: document.getElementById("sterilizationMethod").value,
+        sterilizationDate: document.getElementById("sterilizationDate").value,
+        cycleNumber: document.getElementById("cycleNumber").value.trim(),
+        qualityStatus: document.getElementById("qualityStatus").value,
+        issuedTo: document.getElementById("issuedTo").value.trim(),
+        returnDate: document.getElementById("returnDate").value,
+        technician: document.getElementById("technician").value.trim(),
+        timestamp: new Date().toLocaleString()
+      };
+
+      let records = JSON.parse(localStorage.getItem("cssdRecords") || "[]");
+      records.push(record);
+      localStorage.setItem("cssdRecords", JSON.stringify(records));
+
+      document.getElementById("cssdForm").reset();
+      loadCSSD();
+    }
+
+    function loadCSSD() {
+      const records = JSON.parse(localStorage.getItem("cssdRecords") || "[]");
+      const container = document.getElementById("cssdList");
+      container.innerHTML = "";
+
+      records.forEach(rec => {
+        const card = document.createElement("div");
+        card.className = "record-card";
+        card.innerHTML = `
+          <h3>Set ID: ${rec.setId}</h3>
+          <p><strong>Instrument:</strong> ${rec.instrumentType}</p>
+          <p><strong>Department:</strong> ${rec.department}</p>
+          <p><strong>Collected:</strong> ${rec.collectionTime}</p>
+          <p><strong>Cleaning:</strong> ${rec.cleaningStatus}</p>
+          <p><strong>Sterilization:</strong> ${rec.sterilizationMethod} on ${rec.sterilizationDate} (Cycle ${rec.cycleNumber})</p>
+          <p><strong>Quality Check:</strong> ${rec.qualityStatus}</p>
+          <p><strong>Issued To:</strong> ${rec.issuedTo}</p>
+          <p><strong>Return Date:</strong> ${rec.returnDate}</p>
+          <p><strong>Technician:</strong> ${rec.technician}</p>
+          <p><strong>Logged:</strong> ${rec.timestamp}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.onload = loadCSSD;
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Queue</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 30px;
+    }
+
+    .doctor-box {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .doctor-box h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .doctor-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .doctor-box li {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .count {
+      font-weight: bold;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Appointment Queue</h1>
+  <div id="queueDisplay"></div>
+
+  <script>
+    const queue = JSON.parse(localStorage.getItem("appointmentQueue") || "[]");
+    const grouped = {};
+
+    queue.forEach(app => {
+      if (!grouped[app.doctor]) {
+        grouped[app.doctor] = [];
+      }
+      grouped[app.doctor].push(app);
+    });
+
+    const container = document.getElementById("queueDisplay");
+
+    for (const doctor in grouped) {
+      const box = document.createElement("div");
+      box.className = "doctor-box";
+
+      box.innerHTML = `
+        <h2>${doctor}</h2>
+        <p><span class="count">${grouped[doctor].length}</span> patient(s) waiting</p>
+        <ul>
+          ${grouped[doctor].map(p => `<li>${p.patientName} — ${p.datetime}</li>`).join("")}
+        </ul>
+      `;
+
+      container.appendChild(box);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Bed Management</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+      font-size: 2.5em;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .bed-list {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .bed-card {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-left: 6px solid #6a0572;
+    }
+
+    .bed-card h3 {
+      margin: 0;
+      color: #6a0572;
+    }
+
+    .bed-card p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hospital Bed Management</h1>
+
+  <form id="bedForm" onsubmit="assignBed(); return false;">
+    <label>Patient Name</label>
+    <input type="text" id="patientName" required />
+
+    <label>Ward</label>
+    <select id="ward" required>
+      <option value="">Select Ward</option>
+      <option value="General">General</option>
+      <option value="ICU">ICU</option>
+      <option value="Pediatrics">Pediatrics</option>
+      <option value="Maternity">Maternity</option>
+    </select>
+
+    <label>Bed Number</label>
+    <input type="text" id="bedNumber" required />
+
+    <label>Status</label>
+    <select id="status" required>
+      <option value="Occupied">Occupied</option>
+      <option value="Available">Available</option>
+      <option value="Cleaning">Cleaning</option>
+      <option value="Maintenance">Maintenance</option>
+    </select>
+
+    <button type="submit">Assign Bed</button>
+  </form>
+
+  <div class="bed-list" id="bedList"></div>
+
+  <script>
+    function assignBed() {
+      const bed = {
+        patientName: document.getElementById("patientName").value.trim(),
+        ward: document.getElementById("ward").value,
+        bedNumber: document.getElementById("bedNumber").value.trim(),
+        status: document.getElementById("status").value,
+        timestamp: new Date().toLocaleString()
+      };
+
+      let beds = JSON.parse(localStorage.getItem("bedAssignments") || "[]");
+      beds.push(bed);
+      localStorage.setItem("bedAssignments", JSON.stringify(beds));
+
+      document.getElementById("bedForm").reset();
+      loadBeds();
+    }
+
+    function loadBeds() {
+      const beds = JSON.parse(localStorage.getItem("bedAssignments") || "[]");
+      const container = document.getElementById("bedList");
+      container.innerHTML = "";
+
+      beds.forEach(bed => {
+        const card = document.createElement("div");
+        card.className = "bed-card";
+        card.innerHTML = `
+          <h3>Bed ${bed.bedNumber} — ${bed.ward}</h3>
+          <p><strong>Patient:</strong> ${bed.patientName || "—"}</p>
+          <p><strong>Status:</strong> ${bed.status}</p>
+          <p><strong>Updated:</strong> ${bed.timestamp}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.onload = loadBeds;
+  </script>
+</body>
+</html>

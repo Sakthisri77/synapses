@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Services</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8cdda, #fbc2eb);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #6a0572;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .action-button {
+      background-color: #6a0572;
+      color: white;
+      text-decoration: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .action-button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>Existing Patient </h1>
+  <div class="button-group">
+    <a href="appointmentorder.html" class="action-button">Appointment Order</a>
+    <a href="medicalreport.html" class="action-button">Medical Report</a>
+    <a href="e-prescription.html" class="action-button">E-Prescription</a>
+    <a href="billing.html" class="action-button">Billing</a>
+  </div>
+</body>
+</html>
+

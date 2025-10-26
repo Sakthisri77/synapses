@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synapse</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8cdda, #fbc2eb);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .language-selector select {
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    .emergency-call {
+      display: flex;
+      align-items: center;
+      background-color: #ff4d4d;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .emergency-call img {
+      width: 20px;
+      margin-right: 8px;
+    }
+
+    header {
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      color: #6a0572;
+    }
+
+    header p {
+      font-size: 1.2em;
+      color: #444;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 60px 0;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 250px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card img {
+      width: 60px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #6a0572;
+    }
+
+    .card p {
+      font-size: 0.95em;
+      margin-bottom: 20px;
+    }
+
+    .card button {
+      background-color: #6a0572;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="language-selector">
+      <select onchange="changeLanguage(this.value)">
+        <option value="English">English</option>
+        <option value="Tamil">Tamil</option>
+        <option value="Malayalam">Malayalam</option>
+        <option value="Telugu">Telugu</option>
+      </select>
+    </div>
+    <a class="emergency-call" href="tel:8248519132">
+      <img src="https://img.icons8.com/ios-filled/50/fa314a/phone.png" alt="Emergency Call Icon" />
+      Emergency Call
+    </a>
+  </div>
+
+  <header>
+    <h1 id="title">Synapse</h1>
+    <p id="subtitle">Connecting Intelligence with Healthcare</p>
+  </header>
+
+  <div class="cards">
+    <div class="card">
+      
+<img src="https://as1.ftcdn.net/v2/jpg/01/39/08/44/1000_F_139084493_wj5TAr9e1RwM9Ds32J8HSRasT6ibF2a2.jpg" alt="Patient Icon" width="60" height="60" />
+
+      <h3 id="patient-title">Patient</h3>
+      <p id="patient-desc">Access your health records, book appointments, and track vitals.</p>
+      <button id="patient-btn" > <a href="patient.html" class="card-button">Enter</a></button>
+     
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/ios-filled/100/000000/doctor-male.png" alt="Doctor Icon" />
+      <h3 id="doctor-title">Doctor</h3>
+      <p id="doctor-desc">Manage patients, prescriptions, and clinical insights.</p>
+      <button id="doctor-btn"><a href="doctor.html" class="card-button">Enter</a></button>
+    </div>
+
+    <div class="card">
+      <img src="https://img.icons8.com/ios-filled/100/000000/management.png" alt="Management Icon" />
+      <h3 id="management-title">Management</h3>
+      <p id="management-desc">Administrative tools for hospital operations and staff coordination.</p>
+      <button id="management-btn"><a href="mangement.html" class="card-button">Enter</a></button>
+    </div>
+  </div>
+
+  <footer id="footer">Synapse — Intelligent Healthcare Management System</footer>
+
+  <script>
+    const translations = {
+      English: {
+        title: "Synapse",
+        subtitle: "Connecting Intelligence with Healthcare",
+        patientTitle: "Patient",
+        patientDesc: "Access your health records, book appointments, and track vitals.",
+        patientBtn: "Enter",
+        doctorTitle: "Doctor",
+        doctorDesc: "Manage patients, prescriptions, and clinical insights.",
+        doctorBtn: "Enter",
+        managementTitle: "Management",
+        managementDesc: "Administrative tools for hospital operations and staff coordination.",
+        managementBtn: "Enter",
+        footer: "Synapse — Intelligent Healthcare Management System"
+      },
+      Tamil: {
+        title: "சைனாப்ஸ்",
+        subtitle: "நுண்ணறிவை மருத்துவத்துடன் இணைக்கும்",
+        patientTitle: "நோயாளி",
+        patientDesc: "உங்கள் மருத்துவ பதிவுகளை அணுகவும், நேரமிடவும், உடல் நிலையை கண்காணிக்கவும்.",
+        patientBtn: "நுழைய",
+        doctorTitle: "மருத்துவர்",
+        doctorDesc: "நோயாளிகள், மருந்துகள் மற்றும் மருத்துவ தகவல்களை நிர்வகிக்கவும்.",
+        doctorBtn: "நுழைய",
+        managementTitle: "நிர்வாகம்",
+        managementDesc: "மருத்துவமனை செயல்பாடுகள் மற்றும் பணியாளர் ஒருங்கிணைப்புக்கான நிர்வாக கருவிகள்.",
+        managementBtn: "நுழைய",
+        footer: "சைனாப்ஸ் — நுண்ணறிவு மருத்துவ மேலாண்மை அமைப்பு"
+      },
+      Malayalam: {
+        title: "സൈനാപ്സ്",
+        subtitle: "ബുദ്ധിമുട്ട് ആരോഗ്യപരമായ ബന്ധം",
+        patientTitle: "രോഗി",
+        patientDesc: "നിങ്ങളുടെ ആരോഗ്യ രേഖകൾ ആക്സസ് ചെയ്യുക, അപ്പോയിന്റ്മെന്റ് ബുക്ക് ചെയ്യുക, ആരോഗ്യ സ്ഥിതികൾ നിരീക്ഷിക്കുക.",
+        patientBtn: "പ്രവേശിക്കുക",
+        doctorTitle: "ഡോക്ടർ",
+        doctorDesc: "രോഗികളെ, മരുന്നുകൾ, ക്ലിനിക്കൽ ഇൻസൈറ്റുകൾ കൈകാര്യം ചെയ്യുക.",
+        doctorBtn: "പ്രവേശിക്കുക",
+        managementTitle: "മാനേജ്മെന്റ്",
+        managementDesc: "ആശുപത്രി പ്രവർത്തനങ്ങൾക്കും സ്റ്റാഫ് കോർഡിനേഷനും അഡ്മിനിസ്ട്രേറ്റീവ് ടൂളുകൾ.",
+        managementBtn: "പ്രവേശിക്കുക",
+        footer: "സൈനാപ്സ് — ബുദ്ധിമുട്ടുള്ള ആരോഗ്യ പരിപാലന സംവിധാനം"
+      },
+      Telugu: {
+        title: "సైనాప్స్",
+        subtitle: "తెలివిని ఆరోగ్యంతో కలిపే వేదిక",
+        patientTitle: "రోగి",
+        patientDesc: "మీ ఆరోగ్య రికార్డులను యాక్సెస్ చేయండి, అపాయింట్‌మెంట్‌లు బుక్ చేయండి, ఆరోగ్య స్థితిని ట్రాక్ చేయండి.",
+        patientBtn: "ప్రవేశించండి",
+        doctorTitle: "డాక్టర్",
+        doctorDesc: "రోగులు, ప్రిస్క్రిప్షన్లు మరియు క్లినికల్ విశ్లేషణలను నిర్వహించండి.",
+        doctorBtn: "ప్రవేశించండి",
+        managementTitle: "నిర్వహణ",
+        managementDesc: "ఆసుపత్రి కార్యకలాపాలు మరియు సిబ్బంది సమన్వయానికి పరిపాలనా సాధనాలు.",
+        managementBtn: "ప్రవేశించండి",
+        footer: "సైనాప్స్ — తెలివైన ఆరోగ్య నిర్వహణ వ్యవస్థ"
+      }
+    };
+
+    function changeLanguage(lang) {
+      const t = translations[lang];
+      document.getElementById("title").textContent = t.title;
+      document.getElementById("subtitle").textContent = t.subtitle;
+      document.getElementById("patient-title").textContent = t.patientTitle;
+      document.getElementById("patient-desc").textContent = t.patientDesc;
+      document.getElementById("patient-btn").textContent = t.patientBtn;
+      document.getElementById("doctor-title").textContent = t.doctorTitle;
+      document.getElementById("doctor-desc").textContent = t.doctorDesc;
+    }

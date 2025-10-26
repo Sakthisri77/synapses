@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Order</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8cdda, #fbc2eb);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .success {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Appointment Order</h1>
+  <form id="appointmentForm" onsubmit="saveAppointment(); return false;">
+    <label>Patient Name</label>
+    <input type="text" id="patientName" required />
+
+    <label>Contact Number</label>
+    <input type="tel" id="contact" required />
+
+    <label>Doctor Name</label>
+    <select id="doctor" required>
+      <option value="">Select Doctor</option>
+      <option value="Dr. A. Kumar">Dr. A. Kumar MBBS</option>
+      <option value="Dr. B. Meena">Dr. B. Meena MBBS MD Cardiology</option>
+      <option value="Dr. C. Ravi">Dr. C. Ravi Neurology</option>
+    </select>
+
+    <label>Date & Time</label>
+    <input type="datetime-local" id="datetime" required />
+
+    <label>Reason for Visit</label>
+    <textarea id="reason" rows="4" required></textarea>
+
+    <button type="submit">Book Appointment</button>
+  </form>
+
+  <div class="success" id="successMessage"></div>
+
+  <script>
+    function saveAppointment() {
+      const appointment = {
+        patientName: document.getElementById("patientName").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        doctor: document.getElementById("doctor").value,
+        datetime: document.getElementById("datetime").value,
+        reason: document.getElementById("reason").value.trim(),
+        createdAt: new Date().toLocaleString()
+      };
+
+      let queue = JSON.parse(localStorage.getItem("appointmentQueue") || "[]");
+      queue.push(appointment);
+      localStorage.setItem("appointmentQueue", JSON.stringify(queue));
+
+      document.getElementById("successMessage").textContent = "Appointment booked successfully!";
+      document.getElementById("appointmentForm").reset();
+    }
+  </script>
+</body>
+</html>

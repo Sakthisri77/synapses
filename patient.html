@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Registration</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8cdda, #fbc2eb);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #6a0572;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card-button {
+      background-color: #6a0572;
+      color: white;
+      text-decoration: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .card-button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+  
+
+
+
+</head>
+<body>
+  <h1>Patient Registration</h1>
+  <div class="button-group">
+    <a href="newpatient.html" class="card-button">New Patient</a>
+    <a href="existingpatient.html" class="card-button">Existing Patient</a>
+  </div>
+</body>
+</html>
+

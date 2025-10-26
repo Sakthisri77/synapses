@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Prescription Entry</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      resize: vertical;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .success {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>E-Prescription Entry</h1>
+  <form onsubmit="savePrescription(); return false;">
+    <label>Patient ID</label>
+    <input type="text" id="patientId" required />
+
+    <label>Doctor Name</label>
+    <select id="doctorName" required>
+      <option value="">Select Doctor</option>
+      <option value="Dr. A. Kumar">Dr. A. Kumar</option>
+      <option value="Dr. B. Meena">Dr. B. Meena</option>
+      <option value="Dr. C. Ravi">Dr. C. Ravi</option>
+    </select>
+
+    <label>Drug Name</label>
+    <input type="text" id="drugName" placeholder="e.g., Aspirin" required />
+
+    <label>Dosage Form</label>
+    <input type="text" id="dosageForm" placeholder="e.g., Tablet" required />
+
+    <label>Route of Administration</label>
+    <input type="text" id="route" placeholder="e.g., Oral" required />
+
+    <label>Drug Taken Per Day</label>
+    <input type="text" id="frequency" placeholder="e.g., Twice Daily" required />
+
+    <label>Total Duration</label>
+    <input type="text" id="duration" placeholder="e.g., One Week" required />
+
+    <label>Doctor's Perception</label>
+    <textarea id="notes" rows="4" placeholder="Enter doctor's instructions..." required></textarea>
+
+    <button type="submit">Save Prescription</button>
+  </form>
+
+  <div class="success" id="successMessage"></div>
+
+  <script>
+    function savePrescription() {
+      const id = document.getElementById("patientId").value.trim();
+      const prescription = {
+        doctorName: document.getElementById("doctorName").value,
+        drugName: document.getElementById("drugName").value,
+        dosageForm: document.getElementById("dosageForm").value,
+        route: document.getElementById("route").value,
+        frequency: document.getElementById("frequency").value,
+        duration: document.getElementById("duration").value,
+        notes: document.getElementById("notes").value,
+        date: new Date().toLocaleDateString()
+      };
+
+      let allPrescriptions = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+      if (!allPrescriptions[id]) {
+        allPrescriptions[id] = [];
+      }
+      allPrescriptions[id].push(prescription);
+      localStorage.setItem("prescriptions", JSON.stringify(allPrescriptions));
+
+      document.getElementById("successMessage").textContent = "Prescription saved successfully!";
+      document.querySelector("form").reset();
+    }
+  </script>
+  <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const patientId = urlParams.get("patientId");
+  if (patientId) {
+    document.getElementById("patientId").value = patientId;
+  }
+</script>
+<h2 style="margin-top:40px; color:#6a0572;">Prescriptions & Bills</h2>
+<div id="prescriptionList"></div>
+
+<script>
+  function loadPrescriptions() {
+    const allPrescriptions = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+    const container = document.getElementById("prescriptionList");
+    container.innerHTML = "";
+
+    for (const patientId in allPrescriptions) {
+      allPrescriptions[patientId].forEach((prescription, index) => {
+        const card = document.createElement("div");
+        card.style.background = "#fff";
+        card.style.borderRadius = "10px";
+        card.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+        card.style.padding = "15px";
+        card.style.marginBottom = "20px";
+        card.style.borderLeft = "6px solid #6a0572";
+
+        card.innerHTML = `
+          <strong style="font-size:1.1em;">${patientId}</strong>
+          <span style="float:right; background:#007bff; color:white; padding:4px 10px; border-radius:5px;">${12100 + index}</span>
+          <br><br>
+          <strong>Doctor:</strong> ${prescription.doctorName}<br>
+          <strong>Medications:</strong> ${prescription.drugName} ${prescription.dosageForm}, ${prescription.frequency} for ${prescription.duration}<br>
+          <strong>Route:</strong> ${prescription.route}<br>
+          <strong>Date:</strong> ${prescription.date}<br>
+          <strong>Notes:</strong> ${prescription.notes}
+        `;
+        container.appendChild(card);
+      });
+    }
+  }
+
+  // Load prescriptions when page opens
+  window.onload = loadPrescriptions;
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triage Management</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { color: #6a0572; margin-bottom: 20px; }
+    form {
+      background: #fff; padding: 30px; border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%; max-width: 600px;
+    }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    textarea, input {
+      width: 100%; padding: 10px; margin-bottom: 15px;
+      border-radius: 8px; border: 1px solid #ccc; resize: vertical;
+    }
+    button {
+      background-color: #6a0572; color: white; padding: 12px;
+      border: none; border-radius: 8px; width: 100%;
+      font-weight: bold; cursor: pointer;
+    }
+    button:hover { background-color: #5a0460; }
+    .result {
+      margin-top: 20px; font-weight: bold; color: #6a0572; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Triage Management</h1>
+  <form onsubmit="analyzePriority(); return false;">
+    <label>Patient ID</label>
+    <input type="text" id="patientId" readonly />
+
+    <label>Vitals Summary</label>
+    <textarea id="vitalsSummary" readonly></textarea>
+
+    <label>Chief Complaints</label>
+    <textarea id="complaints" required></textarea>
+
+    <label>Presenting Illness</label>
+    <textarea id="illness" required></textarea>
+
+    <label>Demographic Data</label>
+    <textarea id="demographics" required></textarea>
+
+    <label>Past History</label>
+    <textarea id="pastHistory"></textarea>
+
+    <label>Personal History</label>
+    <textarea id="personalHistory"></textarea>
+
+    <label>Allergic History</label>
+    <textarea id="allergicHistory"></textarea>
+
+    <label>Menstrual History (if applicable)</label>
+    <textarea id="menstrualHistory"></textarea>
+
+    <button type="submit">Analyze Priority</button>
+  </form>
+
+  <div class="result" id="priorityResult"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const patientId = urlParams.get("patientId");
+    document.getElementById("patientId").value = patientId;
+
+    const vitals = JSON.parse(localStorage.getItem("vitals_" + patientId));
+    if (vitals) {
+      document.getElementById("vitalsSummary").value =
+        `BP: ${vitals.bp}, HR: ${vitals.hr}, Resp: ${vitals.respRate}, Temp: ${vitals.temperature}°C, O2: ${vitals.oxygen}%`;
+    }
+
+    function analyzePriority() {
+      const complaints = document.getElementById("complaints").value.toLowerCase();
+      const vitalsText = document.getElementById("vitalsSummary").value.toLowerCase();
+      let priority = "Low Priority";
+
+      if (
+        complaints.includes("chest pain") ||
+        complaints.includes("breathlessness") ||
+        complaints.includes("seizure") ||
+        vitalsText.includes("bp: 160") ||
+        vitalsText.includes("o2: 90")
+      ) {
+        priority = "High Priority";
+      } else if (
+        complaints.includes("fever") ||
+        complaints.includes("vomiting") ||
+        vitalsText.includes("bp: 140") ||
+        vitalsText.includes("o2: 95")
+      ) {
+        priority = "Moderate Priority";
+      }
+
+      document.getElementById("priorityResult").textContent =
+        "Patient categorized as: " + priority;
+    }
+  </script>
+</body>
+</html>

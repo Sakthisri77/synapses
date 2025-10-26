@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biomedical Equipment Management</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+      font-size: 2.5em;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 40px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .equipment-list {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .equipment-card {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-left: 6px solid #6a0572;
+    }
+
+    .equipment-card h3 {
+      margin: 0;
+      color: #6a0572;
+    }
+
+    .equipment-card p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Biomedical Equipment Management</h1>
+
+  <form id="equipmentForm" onsubmit="saveEquipment(); return false;">
+    <label>Equipment ID / Barcode</label>
+    <input type="text" id="equipmentId" required />
+
+    <label>Equipment Name</label>
+    <input type="text" id="equipmentName" required />
+
+    <label>Department / Location</label>
+    <input type="text" id="location" required />
+
+    <label>Manufacturer & Model Number</label>
+    <input type="text" id="manufacturerModel" required />
+
+    <label>Serial Number</label>
+    <input type="text" id="serialNumber" required />
+
+    <label>Date of Purchase / Installation</label>
+    <input type="date" id="purchaseDate" required />
+
+    <label>Warranty & AMC Details</label>
+    <textarea id="warrantyDetails" rows="3" required></textarea>
+
+    <label>Maintenance Schedule (Next Due Date)</label>
+    <input type="date" id="nextMaintenance" required />
+
+    <label>Last Service Date & Technician Name</label>
+    <input type="text" id="lastService" required />
+
+    <label>Calibration Records</label>
+    <textarea id="calibrationRecords" rows="3" required></textarea>
+
+    <label>Status</label>
+    <select id="status" required>
+      <option value="Active">Active</option>
+      <option value="Under Maintenance">Under Maintenance</option>
+      <option value="Out of Service">Out of Service</option>
+    </select>
+
+    <label>Remarks or Service Notes</label>
+    <textarea id="remarks" rows="3"></textarea>
+
+    <button type="submit">Save Equipment</button>
+  </form>
+
+  <div class="equipment-list" id="equipmentList"></div>
+
+  <script>
+    function saveEquipment() {
+      const equipment = {
+        equipmentId: document.getElementById("equipmentId").value.trim(),
+        equipmentName: document.getElementById("equipmentName").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        manufacturerModel: document.getElementById("manufacturerModel").value.trim(),
+        serialNumber: document.getElementById("serialNumber").value.trim(),
+        purchaseDate: document.getElementById("purchaseDate").value,
+        warrantyDetails: document.getElementById("warrantyDetails").value.trim(),
+        nextMaintenance: document.getElementById("nextMaintenance").value,
+        lastService: document.getElementById("lastService").value.trim(),
+        calibrationRecords: document.getElementById("calibrationRecords").value.trim(),
+        status: document.getElementById("status").value,
+        remarks: document.getElementById("remarks").value.trim(),
+        timestamp: new Date().toLocaleString()
+      };
+
+      let records = JSON.parse(localStorage.getItem("equipmentRecords") || "[]");
+      records.push(equipment);
+      localStorage.setItem("equipmentRecords", JSON.stringify(records));
+
+      document.getElementById("equipmentForm").reset();
+      loadEquipment();
+    }
+
+    function loadEquipment() {
+      const records = JSON.parse(localStorage.getItem("equipmentRecords") || "[]");
+      const container = document.getElementById("equipmentList");
+      container.innerHTML = "";
+
+      records.forEach(rec => {
+        const card = document.createElement("div");
+        card.className = "equipment-card";
+        card.innerHTML = `
+          <h3>${rec.equipmentName} (${rec.equipmentId})</h3>
+          <p><strong>Location:</strong> ${rec.location}</p>
+          <p><strong>Manufacturer:</strong> ${rec.manufacturerModel}</p>
+          <p><strong>Serial Number:</strong> ${rec.serialNumber}</p>
+          <p><strong>Installed:</strong> ${rec.purchaseDate}</p>
+          <p><strong>Warranty / AMC:</strong> ${rec.warrantyDetails}</p>
+          <p><strong>Next Maintenance:</strong> ${rec.nextMaintenance}</p>
+          <p><strong>Last Service:</strong> ${rec.lastService}</p>
+          <p><strong>Calibration:</strong> ${rec.calibrationRecords}</p>
+          <p><strong>Status:</strong> ${rec.status}</p>
+          <p><strong>Remarks:</strong> ${rec.remarks}</p>
+          <p><strong>Logged:</strong> ${rec.timestamp}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.onload = loadEquipment;
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cross Consultation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #f8cdda);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #6a0572;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+
+    .success {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cross Consultation</h1>
+  <form onsubmit="saveCrossConsultation(); return false;">
+    <label>Patient ID</label>
+    <input type="text" id="patientId" required />
+
+    <label>Consulted Department</label>
+    <select id="department" required>
+      <option value="">Select Department</option>
+      <option value="Cardiology">Cardiology</option>
+      <option value="Neurology">Neurology</option>
+      <option value="Orthopedics">Orthopedics</option>
+      <option value="Dermatology">Dermatology</option>
+      <option value="Psychiatry">Psychiatry</option>
+    </select>
+
+    <label>Consulted Doctor Name</label>
+    <input type="text" id="doctorName" placeholder="e.g., Dr. R. Meena" required />
+
+    <button type="submit">Send Consultation Request</button>
+  </form>
+
+  <div class="success" id="successMessage"></div>
+
+  <script>
+    function saveCrossConsultation() {
+      const id = document.getElementById("patientId").value.trim();
+      const consultation = {
+        department: document.getElementById("department").value,
+        doctorName: document.getElementById("doctorName").value,
+        date: new Date().toLocaleString()
+      };
+
+      let allCrossConsults = JSON.parse(localStorage.getItem("crossConsultations") || "{}");
+      if (!allCrossConsults[id]) {
+        allCrossConsults[id] = [];
+      }
+      allCrossConsults[id].push(consultation);
+      localStorage.setItem("crossConsultations", JSON.stringify(allCrossConsults));
+
+      document.getElementById("successMessage").textContent = "Cross consultation request saved!";
+      document.querySelector("form").reset();
+    }
+  </script>
+</body>
+</html>

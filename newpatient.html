@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Patient Registration</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8cdda, #fbc2eb);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #6a0572;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    p.subtitle {
+      font-size: 1.2em;
+      color: #444;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    input[readonly] {
+      background-color: #eee;
+    }
+
+    button {
+      background-color: #6a0572;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5a0460;
+    }
+  </style>
+</head>
+<body>
+  <h1>New Patient Registration</h1>
+  <p class="subtitle">Please fill in the details below</p>
+
+  <form id="registrationForm" onsubmit="registerPatient(); return false;">
+    <label for="patientId">Patient ID</label>
+    <input type="text" id="patientId" name="patientId" readonly />
+
+    <label for="name">Patient Name</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="age">Age</label>
+    <input type="number" id="age" name="age" required />
+
+    <label for="sex">Sex</label>
+    <select id="sex" name="sex" required>
+      <option value="">Select</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="address">Address</label>
+    <input type="text" id="address" name="address" required />
+
+    <label for="occupation">Occupation</label>
+    <input type="text" id="occupation" name="occupation" required />
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" required />
+
+    <label for="aadhaar">Aadhaar Number</label>
+    <input type="text" id="aadhaar" name="aadhaar" required />
+
+    <button type="submit">Register & Book Appointment</button>
+  </form>
+
+  <script>
+    function generatePatientId() {
+      const date = new Date();
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      const random = Math.random().toString(36).substring(2, 7).toUpperCase();
+      return `PAT-${yyyy}${mm}${dd}-${random}`;
+    }
+
+    document.getElementById('patientId').value = generatePatientId();
+
+    function registerPatient() {
+      const id = document.getElementById("patientId").value;
+      const patientData = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value,
+        sex: document.getElementById("sex").value,
+        address: document.getElementById("address").value,
+        occupation: document.getElementById("occupation").value,
+        phone: document.getElementById("phone").value,
+        aadhaar: document.getElementById("aadhaar").value,
+        registered: new Date().toLocaleString()
+      };
+
+      let allPatients = JSON.parse(localStorage.getItem("patients") || "{}");
+      allPatients[id] = patientData;
+      localStorage.setItem("patients", JSON.stringify(allPatients));
+
+      window.location.href = "appointmentorder.html?patientId=" + encodeURIComponent(id);
+    }
+  </script>
+</body>
+</html>
+
